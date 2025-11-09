@@ -1,0 +1,40 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.5",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2025-11-09T03:01:29Z",
+    "component": {
+      "type": "application",
+      "name": "volguard",
+      "version": "0.2.0"
+    },
+    "tools": [
+      {
+        "vendor": "Aven",
+        "name": "manual-cdx",
+        "version": "0.2.0"
+      }
+    ]
+  },
+  "components": [
+    {
+      "type": "library",
+      "name": "rich"
+    },
+    {
+      "type": "library",
+      "name": "jinja2"
+    },
+    {
+      "type": "library",
+      "name": "pytest",
+      "scope": "optional"
+    },
+    {
+      "type": "library",
+      "name": "ruff",
+      "scope": "optional"
+    }
+  ]
+}

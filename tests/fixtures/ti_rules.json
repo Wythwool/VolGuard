@@ -1,0 +1,7 @@
+[
+  {
+    "id": "T1001",
+    "description": "Suspicious hide arg",
+    "pattern": "\\\\b-hide\\\\b"
+  }
+]

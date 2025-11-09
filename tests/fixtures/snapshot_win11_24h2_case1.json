@@ -1,0 +1,54 @@
+{
+  "os_version": "Windows 11 24H2",
+  "timestamp": "2025-11-09T02:00:00Z",
+  "processes": [
+    {
+      "pid": 4,
+      "ppid": 0,
+      "name": "System",
+      "cmd": null,
+      "in_active_list": true,
+      "present_in_pool": true,
+      "threads": 100
+    },
+    {
+      "pid": 4242,
+      "ppid": 4,
+      "name": "evil.exe",
+      "cmd": "evil.exe -hide",
+      "in_active_list": false,
+      "present_in_pool": true,
+      "threads": 15
+    },
+    {
+      "pid": 777,
+      "ppid": 777,
+      "name": "weird.exe",
+      "cmd": "do stuff",
+      "in_active_list": true,
+      "present_in_pool": true,
+      "threads": 0
+    }
+  ],
+  "ssdt": [
+    {
+      "index": 16,
+      "addr": 18446735299359801344,
+      "expected_module_base": 18446735290501431296
+    },
+    {
+      "index": 17,
+      "addr": 18446735290501435392,
+      "expected_module_base": 18446735290501431296
+    }
+  ],
+  "etw_events": [
+    {
+      "pid": 4242,
+      "provider": "Microsoft-Windows-Threat-Intelligence",
+      "event_id": 1,
+      "message": "cmdline=evil.exe -hide",
+      "cmdline": "evil.exe -hide"
+    }
+  ]
+}

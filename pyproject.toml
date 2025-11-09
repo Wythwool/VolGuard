@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "volguard"
+version = "0.2.0"
+description = "VolGuard: small Windows memory detections and CLI"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [{name = "Aven"}]
+dependencies = [
+  "rich>=13,<14",
+  "jinja2>=3.1,<4",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=7.4,<8",
+  "coverage>=7,<8",
+  "ruff>=0.6,<1",
+]
+
+[project.scripts]
+volguard = "volguard.cli:main"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+select = ["E","F","I","UP","B"]
+ignore = []
