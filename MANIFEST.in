@@ -1,0 +1,7 @@
+include CHANGELOG.md
+include LICENSE
+include Makefile
+include README.md
+include pyproject.toml
+recursive-include tests *.py *.json
+recursive-include sbom *.json

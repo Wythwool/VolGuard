@@ -1,13 +1,17 @@
-.PHONY: fmt lint test sbom
+.PHONY: fmt lint test check sbom
 
 fmt:
 	ruff check . --fix
+	ruff format .
 
 lint:
 	ruff check .
+	ruff format --check .
 
 test:
 	pytest -q
+
+check: lint test
 
 sbom:
 	@python - <<'PY'

@@ -36,8 +36,12 @@ The code is written so tests run on synthetic fixtures without heavy memory imag
 ## Tests
 
 ```bash
+ruff check .
+ruff format --check .
 pytest -q
 ```
+
+CI runs installation, linting, tests, and package build on Windows and Linux.
 
 ## License
 

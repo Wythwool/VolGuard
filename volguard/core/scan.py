@@ -1,14 +1,17 @@
 from __future__ import annotations
-from typing import Dict, Any, List, Optional
-from pathlib import Path
-import json
-from .data_models import Timeline, load_snapshot, EtwEvent
-from ..plugins.hidden_processes import detect_hidden_processes
-from ..plugins.dkom import detect_dkom
-from ..plugins.ssdt_hooks import detect_ssdt_hooks
-from ..plugins.etw_ti import detect_etw_ti
 
-def scan_snapshot(path: str, ti_rules: Optional[List[dict]] = None) -> Dict[str, Any]:
+import json
+from pathlib import Path
+from typing import Any
+
+from ..plugins.dkom import detect_dkom
+from ..plugins.etw_ti import detect_etw_ti
+from ..plugins.hidden_processes import detect_hidden_processes
+from ..plugins.ssdt_hooks import detect_ssdt_hooks
+from .data_models import Timeline, load_snapshot
+
+
+def scan_snapshot(path: str, ti_rules: list[dict[str, Any]] | None = None) -> dict[str, Any]:
     data = json.loads(Path(path).read_text(encoding="utf-8"))
     processes, ssdt, etw_events = load_snapshot(data)
     findings: Timeline = []

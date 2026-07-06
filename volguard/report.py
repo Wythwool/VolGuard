@@ -1,9 +1,12 @@
 from __future__ import annotations
+
+import json
 from pathlib import Path
-from typing import Dict, Any
-from rich.table import Table
-from rich.console import Console
+from typing import Any
+
 from jinja2 import Template
+from rich.console import Console
+from rich.table import Table
 
 _HTML = """<!doctype html>
 <html><head><meta charset="utf-8"><title>VolGuard Report</title>
@@ -19,7 +22,12 @@ th{background:#f3f4f6;text-align:left;}
 <h1>VolGuard findings</h1>
 <p><b>OS:</b> {{ os_version }} &nbsp; <b>Snapshot:</b> {{ timestamp }}</p>
 <table>
-<thead><tr><th>Time (UTC)</th><th>Detector</th><th>Severity</th><th>PID</th><th>Description</th><th>Tags</th></tr></thead>
+<thead>
+<tr>
+<th>Time (UTC)</th><th>Detector</th><th>Severity</th>
+<th>PID</th><th>Description</th><th>Tags</th>
+</tr>
+</thead>
 <tbody>
 {% for f in findings %}
 <tr>
@@ -35,15 +43,14 @@ th{background:#f3f4f6;text-align:left;}
 </table>
 </body></html>"""
 
-def write_report(summary: Dict[str, Any], out_dir: str) -> None:
+
+def write_report(summary: dict[str, Any], out_dir: str) -> None:
     out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)
-    # JSON
-    (out / "summary.json").write_text(__import__("json").dumps(summary, indent=2), encoding="utf-8")
-    # HTML
+    (out / "summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
     html = Template(_HTML).render(**summary)
     (out / "report.html").write_text(html, encoding="utf-8")
-    # Console pretty table (optional artifact)
+
     table = Table(title="VolGuard findings")
     table.add_column("Time")
     table.add_column("Detector")
@@ -52,5 +59,12 @@ def write_report(summary: Dict[str, Any], out_dir: str) -> None:
     table.add_column("Description")
     table.add_column("Tags")
     for f in summary["findings"]:
-        table.add_row(f["ts"], f["detector"], f["severity"], str(f["pid"] or ""), f["description"], ",".join(f["tags"]))
+        table.add_row(
+            f["ts"],
+            f["detector"],
+            f["severity"],
+            str(f["pid"] or ""),
+            f["description"],
+            ",".join(f["tags"]),
+        )
     Console().print(table)

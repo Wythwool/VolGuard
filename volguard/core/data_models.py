@@ -1,22 +1,26 @@
 from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import Optional, List, Dict, Any
+from typing import Any
+
 
 @dataclass
 class Process:
     pid: int
-    ppid: Optional[int]
+    ppid: int | None
     name: str
-    cmd: Optional[str]
+    cmd: str | None
     in_active_list: bool
     present_in_pool: bool
     threads: int
+
 
 @dataclass
 class SsdtEntry:
     index: int
     addr: int
-    expected_module_base: Optional[int]  # if known
+    expected_module_base: int | None
+
 
 @dataclass
 class EtwEvent:
@@ -24,20 +28,23 @@ class EtwEvent:
     provider: str
     event_id: int
     message: str
-    cmdline: Optional[str] = None
+    cmdline: str | None = None
+
 
 @dataclass
 class Finding:
     ts: str
     detector: str
     severity: str
-    pid: Optional[int]
+    pid: int | None
     description: str
-    tags: List[str]
+    tags: list[str]
 
-Timeline = List[Finding]
 
-def load_snapshot(obj: Dict[str, Any]) -> tuple[list[Process], list[SsdtEntry], list[EtwEvent]]:
+Timeline = list[Finding]
+
+
+def load_snapshot(obj: dict[str, Any]) -> tuple[list[Process], list[SsdtEntry], list[EtwEvent]]:
     processes = [Process(**p) for p in obj.get("processes", [])]
     ssdt = [SsdtEntry(**e) for e in obj.get("ssdt", [])]
     etw = [EtwEvent(**e) for e in obj.get("etw_events", [])]
