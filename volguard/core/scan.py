@@ -11,7 +11,7 @@ from ..plugins.ssdt_hooks import detect_ssdt_hooks
 from .data_models import Timeline, load_snapshot
 
 
-def scan_snapshot(path: str, ti_rules: list[dict[str, Any]] | None = None) -> dict[str, Any]:
+def scan_snapshot(path: str | Path, ti_rules: list[dict[str, Any]] | None = None) -> dict[str, Any]:
     data = json.loads(Path(path).read_text(encoding="utf-8"))
     processes, ssdt, etw_events = load_snapshot(data)
     findings: Timeline = []

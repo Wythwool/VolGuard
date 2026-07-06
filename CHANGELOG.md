@@ -4,6 +4,7 @@
 - Fixed package discovery so editable installs only include the `volguard` package.
 - Added GitHub Actions CI for install, lint, format, tests, and package build.
 - Cleaned the existing code and tests so the baseline passes ruff and pytest.
+- Added snapshot and TI rule validation with short CLI errors for bad input files.
 
 ## [0.2.0] - 2025-11-09
 - Clean rewrite without placeholders

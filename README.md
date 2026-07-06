@@ -17,12 +17,21 @@ pip install -e .[dev]
 ## Quick demo (synthetic snapshot)
 
 ```bash
-volguard scan --image tests/fixtures/snapshot_win11_24h2_case1.json --out out
+volguard scan \
+  --image tests/fixtures/snapshot_win11_24h2_case1.json \
+  --ti-rules tests/fixtures/ti_rules.json \
+  --out out
 ```
 
 Outputs:
 - `out/summary.json` — machine-readable findings
 - `out/report.html` — simple timeline for humans
+
+## Snapshot input
+
+The scanner expects a JSON object with optional `processes`, `ssdt`, and `etw_events` arrays. Records are validated before detectors run, so bad field types fail with the section and index that need fixing.
+
+`--ti-rules` is optional. When supplied, it must point to a JSON list of rule objects. Rules with invalid regular expressions are skipped by the ETW TI detector.
 
 ## Structure
 
