@@ -6,6 +6,7 @@
 - Cleaned the existing code and tests so the baseline passes ruff and pytest.
 - Added snapshot and TI rule validation with short CLI errors for bad input files.
 - Added source hashing, generated metadata, severity counts, and stable finding timestamps.
+- Added CSV exports and a `scan-dir` command with a batch index.
 
 ## [0.2.0] - 2025-11-09
 - Clean rewrite without placeholders

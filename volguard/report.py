@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import csv
 import json
 from pathlib import Path
 from typing import Any
@@ -52,12 +53,31 @@ th{background:#f3f4f6;text-align:left;}
 </body></html>"""
 
 
-def write_report(summary: dict[str, Any], out_dir: str) -> None:
+def _write_findings_csv(summary: dict[str, Any], out: Path) -> None:
+    fields = ["ts", "detector", "severity", "pid", "description", "tags"]
+    with (out / "findings.csv").open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fields)
+        writer.writeheader()
+        for finding in summary["findings"]:
+            writer.writerow(
+                {
+                    "ts": finding["ts"],
+                    "detector": finding["detector"],
+                    "severity": finding["severity"],
+                    "pid": "" if finding["pid"] is None else finding["pid"],
+                    "description": finding["description"],
+                    "tags": ",".join(finding["tags"]),
+                }
+            )
+
+
+def write_report(summary: dict[str, Any], out_dir: str | Path) -> None:
     out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)
     (out / "summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
     html = Template(_HTML).render(**summary)
     (out / "report.html").write_text(html, encoding="utf-8")
+    _write_findings_csv(summary, out)
 
     table = Table(title="VolGuard findings")
     table.add_column("Time")

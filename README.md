@@ -26,8 +26,17 @@ volguard scan \
 Outputs:
 - `out/summary.json` — machine-readable findings
 - `out/report.html` — simple timeline for humans
+- `out/findings.csv` — flat finding export for spreadsheets and pipelines
 
 `summary.json` includes the source SHA-256, generation time, detector counts, severity counts, and the finding list. When the snapshot has a `timestamp`, detector findings use it so repeated scans stay comparable.
+
+Batch scan:
+
+```bash
+volguard scan-dir snapshots --pattern "*.json" --ti-rules rules.json --out batch-out
+```
+
+Batch output contains `batch-out/index.json` plus one report directory per input file. If one snapshot is invalid, the rest are still scanned and the command exits with code `1`.
 
 ## Snapshot input
 
