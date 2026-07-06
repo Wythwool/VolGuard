@@ -81,6 +81,11 @@ def test_ti_rules_validate_root_and_patterns(tmp_path):
     with pytest.raises(SnapshotValidationError, match=r"TI rules\[0\]\.pattern must be a string"):
         _load_ti_rules(rules_path)
 
+    rules_path.write_text(json.dumps([{"pattern": "x", "id": 42}]), encoding="utf-8")
+
+    with pytest.raises(SnapshotValidationError, match=r"TI rules\[0\]\.id must be a string"):
+        _load_ti_rules(rules_path)
+
 
 def test_cli_reports_snapshot_validation_error(monkeypatch, tmp_path, capsys):
     snapshot_path = tmp_path / "bad_snapshot.json"

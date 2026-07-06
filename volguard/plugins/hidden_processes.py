@@ -5,14 +5,17 @@ from datetime import UTC, datetime
 from ..core.data_models import Finding, Process
 
 
-def detect_hidden_processes(processes: list[Process]) -> list[Finding]:
+def detect_hidden_processes(
+    processes: list[Process],
+    timestamp: str | None = None,
+) -> list[Finding]:
     findings: list[Finding] = []
-    now = datetime.now(UTC).isoformat()
+    ts = timestamp or datetime.now(UTC).isoformat()
     for p in processes:
         if p.present_in_pool and not p.in_active_list:
             findings.append(
                 Finding(
-                    ts=now,
+                    ts=ts,
                     detector="hidden_processes",
                     severity="high",
                     pid=p.pid,

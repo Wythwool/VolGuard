@@ -21,6 +21,14 @@ th{background:#f3f4f6;text-align:left;}
 </head><body>
 <h1>VolGuard findings</h1>
 <p><b>OS:</b> {{ os_version }} &nbsp; <b>Snapshot:</b> {{ timestamp }}</p>
+<p><b>Source SHA-256:</b> {{ metadata.source_sha256 }}</p>
+<p><b>Generated:</b> {{ metadata.generated_at }}</p>
+<p>
+  <b>Severity:</b>
+  high {{ severity_counts.high }},
+  medium {{ severity_counts.medium }},
+  low {{ severity_counts.low }}
+</p>
 <table>
 <thead>
 <tr>
@@ -63,7 +71,7 @@ def write_report(summary: dict[str, Any], out_dir: str) -> None:
             f["ts"],
             f["detector"],
             f["severity"],
-            str(f["pid"] or ""),
+            "" if f["pid"] is None else str(f["pid"]),
             f["description"],
             ",".join(f["tags"]),
         )

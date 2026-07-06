@@ -5,9 +5,12 @@ from datetime import UTC, datetime
 from ..core.data_models import Finding, SsdtEntry
 
 
-def detect_ssdt_hooks(entries: list[SsdtEntry]) -> list[Finding]:
+def detect_ssdt_hooks(
+    entries: list[SsdtEntry],
+    timestamp: str | None = None,
+) -> list[Finding]:
     findings: list[Finding] = []
-    now = datetime.now(UTC).isoformat()
+    ts = timestamp or datetime.now(UTC).isoformat()
     for e in entries:
         if e.expected_module_base is None:
             continue
@@ -16,7 +19,7 @@ def detect_ssdt_hooks(entries: list[SsdtEntry]) -> list[Finding]:
         if not (module_base <= e.addr < module_end):
             findings.append(
                 Finding(
-                    ts=now,
+                    ts=ts,
                     detector="ssdt_hooks",
                     severity="high",
                     pid=None,

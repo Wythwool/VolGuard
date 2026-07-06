@@ -26,6 +26,12 @@ def _load_ti_rules(path: Path | None) -> list[dict[str, Any]] | None:
         pattern = rule.get("pattern")
         if pattern is not None and not isinstance(pattern, str):
             raise SnapshotValidationError(f"TI rules[{index}].pattern must be a string")
+        rule_id = rule.get("id")
+        if rule_id is not None and not isinstance(rule_id, str):
+            raise SnapshotValidationError(f"TI rules[{index}].id must be a string")
+        description = rule.get("description")
+        if description is not None and not isinstance(description, str):
+            raise SnapshotValidationError(f"TI rules[{index}].description must be a string")
     return rules
 
 

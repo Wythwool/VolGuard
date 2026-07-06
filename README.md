@@ -27,6 +27,8 @@ Outputs:
 - `out/summary.json` — machine-readable findings
 - `out/report.html` — simple timeline for humans
 
+`summary.json` includes the source SHA-256, generation time, detector counts, severity counts, and the finding list. When the snapshot has a `timestamp`, detector findings use it so repeated scans stay comparable.
+
 ## Snapshot input
 
 The scanner expects a JSON object with optional `processes`, `ssdt`, and `etw_events` arrays. Records are validated before detectors run, so bad field types fail with the section and index that need fixing.

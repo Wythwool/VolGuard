@@ -7,18 +7,24 @@ from typing import Any
 from ..core.data_models import EtwEvent, Finding
 
 
-def detect_etw_ti(events: list[EtwEvent], rules: list[dict[str, Any]]) -> list[Finding]:
+def detect_etw_ti(
+    events: list[EtwEvent],
+    rules: list[dict[str, Any]],
+    timestamp: str | None = None,
+) -> list[Finding]:
     findings: list[Finding] = []
-    now = datetime.now(UTC).isoformat()
+    ts = timestamp or datetime.now(UTC).isoformat()
     patterns = []
     for r in rules:
         pat = r.get("pattern")
-        if not pat:
+        if not isinstance(pat, str) or not pat:
+            continue
+        rule_id = r.get("id", "TI")
+        description = r.get("description", "match")
+        if not isinstance(rule_id, str) or not isinstance(description, str):
             continue
         try:
-            patterns.append(
-                (re.compile(pat, re.I), r.get("id", "TI"), r.get("description", "match"))
-            )
+            patterns.append((re.compile(pat, re.I), rule_id, description))
         except re.error:
             continue
     for ev in events:
@@ -27,7 +33,7 @@ def detect_etw_ti(events: list[EtwEvent], rules: list[dict[str, Any]]) -> list[F
             if rex.search(cmd):
                 findings.append(
                     Finding(
-                        ts=now,
+                        ts=ts,
                         detector="etw_ti",
                         severity="low",
                         pid=ev.pid,

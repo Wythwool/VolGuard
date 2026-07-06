@@ -5,14 +5,17 @@ from datetime import UTC, datetime
 from ..core.data_models import Finding, Process
 
 
-def detect_dkom(processes: list[Process]) -> list[Finding]:
+def detect_dkom(
+    processes: list[Process],
+    timestamp: str | None = None,
+) -> list[Finding]:
     findings: list[Finding] = []
-    now = datetime.now(UTC).isoformat()
+    ts = timestamp or datetime.now(UTC).isoformat()
     for p in processes:
         if p.present_in_pool and p.in_active_list and p.threads == 0:
             findings.append(
                 Finding(
-                    ts=now,
+                    ts=ts,
                     detector="dkom",
                     severity="medium",
                     pid=p.pid,
@@ -23,7 +26,7 @@ def detect_dkom(processes: list[Process]) -> list[Finding]:
         if p.ppid is not None and p.ppid == p.pid:
             findings.append(
                 Finding(
-                    ts=now,
+                    ts=ts,
                     detector="dkom",
                     severity="low",
                     pid=p.pid,
